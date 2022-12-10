@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+   
+  eurkaserver:
+    image: eurkaserver:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8070:8070"
+    networks:
+     - medicalClininc
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        window: 120s
+      
+  medicalclinc:
+    image: medicalclinc:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8080:8080"
+    networks:
+      - medicalClininc
+    depends_on:
+      - eurkaserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 3
+        window: 120s
+
+networks:
+  medicalClininc:

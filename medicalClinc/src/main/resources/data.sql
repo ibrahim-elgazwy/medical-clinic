@@ -8,20 +8,20 @@ insert into appointment_status(id, status) values(3, 'ATTENDED');
 insert into appointment_status(id, status) values(4, 'RE_ATTENDED');
 
 
-insert into appointment(appointment_date, patient_id, status_id)  values('2022-12-15', 1, 2);
+insert into appointment(appointment_date, patient_id, status_id)  values('2022-12-11', 1, 2);
 
-insert into appointment(appointment_date, patient_id, status_id)  values('2022-12-05', 1, 1);
+insert into appointment(appointment_date, patient_id, status_id)  values('2022-12-11', 1, 1);
 
-insert into appointment(appointment_date, patient_id, status_id)  values('2022-11-11', 2, 1);
+insert into appointment(appointment_date, patient_id, status_id)  values('2022-12-12', 2, 1);
 
-insert into appointment(appointment_date, patient_id, status_id)  values('2022-11-12', 2, 3);
+insert into appointment(appointment_date, patient_id, status_id)  values('2022-12-12', 2, 3);
 
 insert into appointment(appointment_date, patient_id, status_id)  values('2022-11-20', 2, 4);
 
 insert into appointment(appointment_date, patient_id, status_id)  values('2022-12-18', 3, 1);
 
-insert into appointment(appointment_date, patient_id, status_id)  values('2022-12-8', 3, 1);
-insert into appointment(appointment_date, patient_id, status_id)  values('2022-12-8', 1, 1);
+insert into appointment(appointment_date, patient_id, status_id)  values('2022-12-13', 3, 1);
+insert into appointment(appointment_date, patient_id, status_id)  values('2022-12-13', 1, 1);
 
 
 insert into appointment_cancel_reason(reason, appointment_id)  values('I visit another doctor', 1);

@@ -3,7 +3,9 @@ version: "3.8"
 services:
    
   eurkaserver:
-    image: eurkaserver:0.0.1-SNAPSHOT
+    container_name: eurkaserver 
+    image: eurkaserver
+    build: ./eurkaserver
     mem_limit: 700m
     ports:
       - "8070:8070"
@@ -14,9 +16,26 @@ services:
         condition: on-failure
         max_attempts: 3
         window: 120s
+        
+  postgresqldb:
+    container_name: postgresqldb
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=medicalClinic
+    restart: always
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+    networks:
+      - medicalClininc
       
   medicalclinc:
-    image: medicalclinc:0.0.1-SNAPSHOT
+    container_name: medicalclinc 
+    image: medicalclinc
+    build: ./medicalClinc
     mem_limit: 700m
     ports:
       - "8080:8080"
@@ -24,12 +43,22 @@ services:
       - medicalClininc
     depends_on:
       - eurkaserver
+      - postgresqldb
+
     deploy:
       restart_policy:
         condition: on-failure
         delay: 30s
         max_attempts: 3
         window: 120s
-
+    environment:
+      SPRING_DATASOURCE_URL: r2dbc:postgresql://localhost:5432/medicalClinic
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      
+volumes:
+  local_pgdata:
+  
 networks:
   medicalClininc:

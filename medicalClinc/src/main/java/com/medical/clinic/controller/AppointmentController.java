@@ -2,9 +2,10 @@ package com.medical.clinic.controller;
 
 import java.util.Date;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,6 @@ import com.medical.clinic.dto.AppointmentCancelReasonDto;
 import com.medical.clinic.dto.RestResponse;
 import com.medical.clinic.service.AppointmentService;
 
-import jakarta.validation.Valid;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -29,7 +29,7 @@ public class AppointmentController {
 	@Autowired
 	private AppointmentService appointmentService;
 
-	@GetMapping(value="/todayAppointments", produces = MediaType.APPLICATION_JSON_VALUE) 
+	@GetMapping("/todayAppointments") 
 	public Mono<RestResponse> getAllTodayAppointments(){
 		
 		return appointmentService.getAllTodayAppointments()
@@ -37,7 +37,7 @@ public class AppointmentController {
 		        .map(RestResponse::new);
 	}
 	
-	@GetMapping(value="/searchByPatientName/{patientName}", produces = MediaType.APPLICATION_JSON_VALUE) 
+	@GetMapping("/searchByPatientName/{patientName}") 
 	public Mono<RestResponse>  searchForAppointmentsByPatientName(
 			@PathVariable("patientName") String patientName){
 
@@ -46,7 +46,7 @@ public class AppointmentController {
 		        .map(RestResponse::new);
 	}
 	
-	@GetMapping(value="/searchByAppointMentDate", produces = MediaType.APPLICATION_JSON_VALUE) 
+	@GetMapping("/searchByAppointMentDate") 
 	public Mono<RestResponse> searchForAppointmentsByDate(
 			@RequestParam(name = "appointmentDate", required = true) 
 				@DateTimeFormat(pattern = "yyyy-MM-dd") Date appointmentDate){
@@ -56,14 +56,14 @@ public class AppointmentController {
 		        .map(RestResponse::new);
 	}
 	
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping
 	public Mono<RestResponse> addNewAppointMent(@Valid @RequestBody Mono<Appointment> appointment) {
 		
 		return appointmentService.addNewAppointment(appointment)
 		        .map(RestResponse::new);
 	}
 	
-	@PutMapping(value="/cancelAppointment", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("/cancelAppointment")
 	public Mono<RestResponse>  cancelAppointment(
 			@RequestBody AppointmentCancelReasonDto appointmentCancelReason) {
 		

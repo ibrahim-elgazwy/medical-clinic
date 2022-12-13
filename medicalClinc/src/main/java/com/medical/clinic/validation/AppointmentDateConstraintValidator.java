@@ -4,10 +4,10 @@ import static java.util.Objects.isNull;
 
 import java.time.LocalDate;
 
-import com.medical.clinic.domain.Appointment;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import com.medical.clinic.domain.Appointment;
 
 public class AppointmentDateConstraintValidator implements ConstraintValidator<ValidAppointmentDate, Appointment> {
 

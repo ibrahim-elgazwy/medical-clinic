@@ -7,12 +7,12 @@ import java.time.LocalDate;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.medical.clinic.domain.Appointment;
+import com.medical.clinic.dto.AppointmentDto;
 
-public class AppointmentDateConstraintValidator implements ConstraintValidator<ValidAppointmentDate, Appointment> {
+public class AppointmentDateConstraintValidator implements ConstraintValidator<ValidAppointmentDate, AppointmentDto> {
 
 	@Override
-	public boolean isValid(Appointment appointment, ConstraintValidatorContext context) {
+	public boolean isValid(AppointmentDto appointment, ConstraintValidatorContext context) {
 		
 		if(isNull(appointment.getAppointmentDate()))
 			return false;

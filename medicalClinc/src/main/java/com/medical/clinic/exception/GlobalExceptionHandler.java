@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.support.WebExchangeBindException;
 
 import com.medical.clinic.dto.RestResponse;
+import com.medical.clinic.enums.ClinicErrorEnum;
 import com.medical.clinic.enums.StatusEnum;
 
 @ControllerAdvice
@@ -28,7 +29,7 @@ public class GlobalExceptionHandler {
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
     	
-        return new RestResponse(StatusEnum.ERROR, errors);
+        return new RestResponse(StatusEnum.ERROR, errors, ClinicErrorEnum.INVALID_FIELDS);
     }
     
 	@ExceptionHandler(ClinicException.class)

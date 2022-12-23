@@ -9,6 +9,7 @@ import com.medical.clinic.exception.ClinicException;
 import com.medical.clinic.repository.PatientRepository;
 import com.medical.clinic.service.PatientService;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -19,10 +20,19 @@ public class PatientServiceImpl implements PatientService {
 	private PatientRepository patientRepository;
 	
 	@Override
-	public Mono<Patient> findByName(String name) {
+	public Flux<Patient> findByName(String name) {
 		
-		return patientRepository.findByName(name)
-				.switchIfEmpty(Mono.error(new ClinicException(ClinicErrorEnum.PATIENT_NOT_FOUND)));
+		return patientRepository.findByNameContainingIgnoreCase(name)
+				.switchIfEmpty(Mono.error(new ClinicException(ClinicErrorEnum.PATIENT_NOT_FOUND)))
+				.map(patient -> patient);
+	}
+	
+	@Override
+	public Mono<Patient> findById(Long id) {
+		
+		return patientRepository.findById(id)
+				.switchIfEmpty(Mono.error(new ClinicException(ClinicErrorEnum.PATIENT_NOT_FOUND)))
+				.map(patient -> patient);
 	}
 
 }

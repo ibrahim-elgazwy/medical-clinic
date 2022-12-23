@@ -7,58 +7,60 @@ services:
     image: eurkaserver
     build: ./eurkaserver
     mem_limit: 700m
+    
     ports:
       - "8070:8070"
+      
     networks:
-     - medicalClininc
-    deploy:
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
-        window: 120s
-        
-  postgresqldb:
-    container_name: postgresqldb
-    image: postgres
-    ports:
-      - "5432:5432"
+      - backend
+ 
+    environment:
+      EUREKA_SERVER: "http://eurkaserver:8070/eureka/"
+      EUREKASERVER_PORT: "8070"
+      
+  db:
+    image: db
+    container_name: db
+    build:
+      context: ./db
+      target: db
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=medicalClinic
-    restart: always
-    volumes:
-      - local_pgdata:/var/lib/postgresql/data
-    networks:
-      - medicalClininc
+      - POSTGRES_DB=medicalclinc
       
+    ports:
+      - 5432:5432
+      
+    networks:
+      - backend
+
   medicalclinc:
-    container_name: medicalclinc 
     image: medicalclinc
+    container_name: medicalclinc 
     build: ./medicalClinc
     mem_limit: 700m
+    
     ports:
-      - "8080:8080"
-    networks:
-      - medicalClininc
+      - "8089:8089"
+
     depends_on:
       - eurkaserver
-      - postgresqldb
+      - db
 
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 30s
+        delay: 120s
         max_attempts: 3
         window: 120s
+        
     environment:
-      SPRING_DATASOURCE_URL: r2dbc:postgresql://localhost:5432/medicalClinic
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: 1234
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_SERVER: "http://eurkaserver:8070/eureka/"
+      DB_URL: "r2dbc:postgresql://db:5432/medicalclinc"
       
-volumes:
-  local_pgdata:
-  
+    networks:
+      - backend
+      
 networks:
-  medicalClininc:
+  backend:

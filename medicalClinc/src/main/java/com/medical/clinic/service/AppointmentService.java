@@ -6,6 +6,7 @@ import com.medical.clinic.domain.Appointment;
 import com.medical.clinic.domain.AppointmentCancelReasons;
 import com.medical.clinic.dto.AppointmentCancelReasonDto;
 import com.medical.clinic.dto.AppointmentDetailsDto;
+import com.medical.clinic.dto.AppointmentDto;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,7 +15,7 @@ public interface AppointmentService {
 
 	Flux<AppointmentDetailsDto> getAllTodayAppointments();
 	
-	Mono<Appointment> addNewAppointment(Mono<Appointment> appointmentDto);
+	Mono<Appointment> addNewAppointment(Mono<AppointmentDto> appointmentDto);
 	
 	Flux<AppointmentDetailsDto> getAppointmentsByDate(Date date);
 	

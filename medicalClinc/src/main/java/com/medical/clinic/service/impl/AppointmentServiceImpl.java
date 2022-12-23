@@ -2,6 +2,7 @@ package com.medical.clinic.service.impl;
 
 import java.util.Date;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,13 +12,13 @@ import com.medical.clinic.domain.AppointmentCancelReasons;
 import com.medical.clinic.domain.Patient;
 import com.medical.clinic.dto.AppointmentCancelReasonDto;
 import com.medical.clinic.dto.AppointmentDetailsDto;
+import com.medical.clinic.dto.AppointmentDto;
 import com.medical.clinic.enums.AppointmentStatausEnum;
 import com.medical.clinic.enums.ClinicErrorEnum;
 import com.medical.clinic.exception.ClinicException;
 import com.medical.clinic.repository.AppointmentRepository;
-import com.medical.clinic.repository.AppointmentStatusRepository;
-import com.medical.clinic.repository.PatientRepository;
 import com.medical.clinic.service.AppointmentService;
+import com.medical.clinic.service.AppointmentStatusService;
 import com.medical.clinic.service.CancelAppointmentService;
 import com.medical.clinic.service.PatientService;
 
@@ -32,22 +33,32 @@ public class AppointmentServiceImpl implements AppointmentService {
 	private AppointmentRepository appointmentRepository;
 	
 	@Autowired
-	private AppointmentStatusRepository appointmentStatusRepository;
-	
-	@Autowired
 	private CancelAppointmentService cancelAppointmentService;
 	
 	@Autowired
-	private PatientRepository patientRepository;
+	private PatientService patientService;
 	
 	@Autowired
-	private PatientService patientService;
+	private AppointmentStatusService AppointmentStatusService;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
 	@Transactional
-	public Mono<Appointment> addNewAppointment(Mono<Appointment> appointment) {
+	public Mono<Appointment> addNewAppointment(Mono<AppointmentDto> appointmentDto) {
+				
+		return appointmentDto
+				.flatMap(this::validateAppointment)
+				.map(appointment -> modelMapper.map(appointment, Appointment.class))
+				.flatMap(appointmentRepository::save);
+	}
+	
+	private Mono<AppointmentDto> validateAppointment(AppointmentDto appointmentDto) {
 		
-		return appointment.flatMap(appointmentRepository::save);
+		return Mono.zip(patientService.findById(appointmentDto.getPatient()), 
+				AppointmentStatusService.findAppointmentStatusById(appointmentDto.getStatus()))
+			.map(res -> appointmentDto);
 	}
 
 	@Override
@@ -92,7 +103,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	public Flux<AppointmentDetailsDto> getAppointmentsByPatientName(String name) {
 		
 		return patientService.findByName(name)
-				.flatMapMany(this::findAppointMentByPatient);
+				.flatMap(this::findAppointMentByPatient);
 	}
 	
 	private Flux<AppointmentDetailsDto> findAppointMentByPatient(Patient patient) {
@@ -105,8 +116,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 	private Flux<AppointmentDetailsDto> getAppointMentDetails(Appointment appointment) {
 		
 		return Flux.zip(
-				patientRepository.findById(appointment.getPatient()), 
-				appointmentStatusRepository.findById(appointment.getStatus())
+				patientService.findById(appointment.getPatient()), 
+				AppointmentStatusService.findAppointmentStatusById(appointment.getStatus())
 		).map(res -> {
 			
 			AppointmentDetailsDto dto = new AppointmentDetailsDto();

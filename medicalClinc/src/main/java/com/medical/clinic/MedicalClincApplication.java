@@ -1,5 +1,6 @@
 package com.medical.clinic;
 
+import org.modelmapper.ModelMapper;
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -18,11 +19,14 @@ public class MedicalClincApplication {
 	@Bean
 	public GroupedOpenApi appointmentOpenApi(@Value("${springdoc.version}") String appVersion) {
 		String[] paths = { "/appointment/**" };
-		return GroupedOpenApi.builder().
-				group("appointment")
-				.addOpenApiCustomiser(openApi -> openApi.info(new Info()
-						.title("Appointment API").version(appVersion)))
-				.pathsToMatch(paths)
-				.build();
+		return GroupedOpenApi.builder().group("appointment")
+				.addOpenApiCustomiser(openApi -> openApi.info(new Info().title("Appointment API").version(appVersion)))
+				.pathsToMatch(paths).build();
+	}
+
+	@Bean
+	public ModelMapper modelMapper() {
+		
+		return new ModelMapper();
 	}
 }

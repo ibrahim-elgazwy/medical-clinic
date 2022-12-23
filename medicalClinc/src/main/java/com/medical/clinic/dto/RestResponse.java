@@ -3,8 +3,8 @@ package com.medical.clinic.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import com.medical.clinic.enums.ClinicErrorEnum;
 import com.medical.clinic.enums.StatusEnum;
-import com.medical.clinic.exception.ErrorDetails;
 
 public class RestResponse implements Serializable {
 
@@ -33,8 +33,10 @@ public class RestResponse implements Serializable {
 		this.errorDescription = errorDescription;
 	}
 	
-	public RestResponse(StatusEnum statusEnum, List<String> errorDetails) {
+	public RestResponse(StatusEnum statusEnum, List<String> errorDetails, ClinicErrorEnum clinicErrorEnum) {
 		this.status = statusEnum;
+		this.errorCode = clinicErrorEnum.getErrorCode();
+		this.errorDescription = clinicErrorEnum.getErrorDescription();
 		this.setBody(errorDetails);
 	}
 

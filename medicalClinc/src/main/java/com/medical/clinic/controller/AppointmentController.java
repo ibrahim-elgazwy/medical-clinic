@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.medical.clinic.domain.Appointment;
 import com.medical.clinic.dto.AppointmentCancelReasonDto;
+import com.medical.clinic.dto.AppointmentDto;
 import com.medical.clinic.dto.RestResponse;
 import com.medical.clinic.service.AppointmentService;
 
@@ -57,7 +57,7 @@ public class AppointmentController {
 	}
 	
 	@PostMapping
-	public Mono<RestResponse> addNewAppointMent(@Valid @RequestBody Mono<Appointment> appointment) {
+	public Mono<RestResponse> addNewAppointMent(@Valid @RequestBody Mono<AppointmentDto> appointment) {
 		
 		return appointmentService.addNewAppointment(appointment)
 		        .map(RestResponse::new);
@@ -65,7 +65,7 @@ public class AppointmentController {
 	
 	@PutMapping("/cancelAppointment")
 	public Mono<RestResponse>  cancelAppointment(
-			@RequestBody AppointmentCancelReasonDto appointmentCancelReason) {
+			@Valid @RequestBody AppointmentCancelReasonDto appointmentCancelReason) {
 		
 		return appointmentService.cancelAppointment(appointmentCancelReason)
 				.map(RestResponse::new);

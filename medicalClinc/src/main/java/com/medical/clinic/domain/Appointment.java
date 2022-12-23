@@ -3,6 +3,8 @@ package com.medical.clinic.domain;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import javax.validation.constraints.Min;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -11,7 +13,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.medical.clinic.validation.ValidAppointmentDate;
 
 @Table(name = "appointment")
-@ValidAppointmentDate
 public class Appointment {
 
 	@Id

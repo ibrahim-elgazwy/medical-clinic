@@ -5,10 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.medical.clinic.domain.Patient;
 
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 @Repository
 public interface PatientRepository extends ReactiveCrudRepository<Patient, Long> {
 
-	Mono<Patient> findByName(String name);
+	Flux<Patient> findByNameContainingIgnoreCase(String name);
 }

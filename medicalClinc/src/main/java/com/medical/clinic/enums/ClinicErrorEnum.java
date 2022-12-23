@@ -3,6 +3,8 @@ package com.medical.clinic.enums;
 public enum ClinicErrorEnum {
 
 	APPOINTMENT_NOT_FOUND("APPOINTMENT_NOT_FOUND", "Appointment Not Founded!"),
+	INVALID_FIELDS("INVALID_FIELDS", "invalid body fields"),
+	APPOINTMENT_STATUS_NOT_FOUND("APPOINTMENT_STATUS_NOT_FOUND", "invalid appointment status id"),
 	PATIENT_NOT_FOUND("PATIENT_NOT_FOUND", "Patient Not Founded!");
 	
 	

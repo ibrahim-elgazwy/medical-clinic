@@ -1,3 +1,4 @@
+
 DROP TABLE IF EXISTS appointment_cancel_reason;
 DROP TABLE IF EXISTS appointment;
 DROP TABLE IF EXISTS patient;

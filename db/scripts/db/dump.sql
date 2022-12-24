@@ -36,6 +36,13 @@ create table appointment_cancel_reason(
 insert into patient(id, name, email, mobile) values(1,'ahmed ali','user1@gmail.com','01234569845');
 insert into patient(id, name, email, mobile) values(2, 'john doe','user2@gmail.com','01234569888');
 insert into patient(id, name, email, mobile) values(3, 'ibrahim elrouby','user3@gmail.com','01234569849');
+insert into patient(id, name, email, mobile) values(4,'mohamed ali','user1@gmail.com','01234569845');
+insert into patient(id, name, email, mobile) values(5, 'john alex','user2@gmail.com','01234569888');
+insert into patient(id, name, email, mobile) values(6, 'sayed ahmrd','user3@gmail.com','01234569849');
+insert into patient(id, name, email, mobile) values(7,'mohamed ali','user1@gmail.com','01234569845');
+insert into patient(id, name, email, mobile) values(8, 'john alex','user2@gmail.com','01234569888');
+insert into patient(id, name, email, mobile) values(9, 'sayed ahmrd','user3@gmail.com','01234569849');
+
 
 insert into appointment_status(id, status) values(1,'REGISTER');
 insert into appointment_status(id, status) values(2, 'CANCEL');

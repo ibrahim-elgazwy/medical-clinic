@@ -14,7 +14,6 @@ $ http://localhost:8070/
 
 ### Open Swagger API
 
-```sh
 [http://localhost:8089/swagger-doc/swagger-ui.html](http://localhost:8089/swagger-doc/swagger-ui.html)
-```
+
 

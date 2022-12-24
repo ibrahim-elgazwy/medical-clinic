@@ -8,9 +8,8 @@ $ docker compose up --build
 
 ### Open Eureka Server
 
-```sh
-$ http://localhost:8070/
-```
+
+[http://localhost:8070/](http://localhost:8070/)
 
 ### Open Swagger API
 

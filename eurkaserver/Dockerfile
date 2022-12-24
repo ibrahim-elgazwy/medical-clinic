@@ -1,11 +1,12 @@
-#Start with a base image containing Java runtime
-FROM openjdk:11-slim as build
+FROM maven:3.6.0-jdk-11-slim AS build
+COPY src /home2/app/src
+COPY pom.xml /home2/app
+RUN mvn -Dmaven.test.skip=true -f /home2/app/pom.xml clean install package
 
-#Information around who maintains the image
-MAINTAINER medicalclinic.com
-
-# Add the application's jar to the container
-COPY target/eurkaserver-0.0.1-SNAPSHOT.jar eurkaserver-0.0.1-SNAPSHOT.jar
-
-#execute the application
-ENTRYPOINT ["java","-jar","/eurkaserver-0.0.1-SNAPSHOT.jar"]
+#
+# Package stage
+#
+FROM openjdk:11-jre-slim
+COPY --from=build /home2/app/target/eurkaserver-0.0.1-SNAPSHOT.jar /usr/local/lib/eurkaserver.jar
+EXPOSE 8070
+ENTRYPOINT ["java","-jar","/usr/local/lib/eurkaserver.jar"]

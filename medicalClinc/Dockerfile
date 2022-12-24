@@ -1,11 +1,12 @@
-#Start with a base image containing Java runtime
-FROM openjdk:11-slim as build
+FROM maven:3.8.6-jdk-11-slim AS build
+COPY src /home/app/src
+COPY pom.xml /home/app
+RUN mvn -Dmaven.test.skip=true -f /home/app/pom.xml clean package
 
-#Information around who maintains the image
-MAINTAINER medicalclinic.com
-
-# Add the application's jar to the container
-COPY target/medicalclinc-0.0.1-SNAPSHOT.jar medicalclinc-0.0.1-SNAPSHOT.jar
-
-#execute the application
-ENTRYPOINT ["java","-jar","/medicalclinc-0.0.1-SNAPSHOT.jar"]
+#
+# Package stage
+#
+FROM openjdk:11-jre-slim
+COPY --from=build /home/app/target/medicalclinc-0.0.1-SNAPSHOT.jar /usr/local/lib/medicalclinc.jar
+EXPOSE 8089
+ENTRYPOINT ["java","-jar","/usr/local/lib/medicalclinc.jar"]
